@@ -1,26 +1,16 @@
 package com.example.fitness
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -34,27 +24,33 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Divider
-import androidx.compose.material3.DividerDefaults
-import androidx.compose.material3.FloatingActionButtonElevation
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
+@Preview
 fun TrackCard(
-    creater: String,
-    createdAt: String,
-    title: String,
-    description: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    User: String = "Пацан улиц",
+    createdAt: String= "16:81",
+    title: String= "Крутая поездочка",
+    description: String= "Очень круто покатались"
+
 ){
-    val pagerState = rememberPagerState(initialPage = 1)
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
@@ -71,8 +67,9 @@ fun TrackCard(
                 painter = rememberAsyncImagePainter(model = "https://afisha.yuga.ru/media/c4/4a/happy-1836445_1920__wbcwyny.jpg"),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
+                    .size(44.dp)
+                    .clip(CircleShape),
+                alignment = Alignment.Center
             )
             Column(
                 modifier = Modifier
@@ -81,7 +78,7 @@ fun TrackCard(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = creater,
+                    text = User,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -91,15 +88,45 @@ fun TrackCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            IconButton(
-                onClick = { /*TODO*/ }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = "Favorite",
-                    tint = MaterialTheme.colorScheme.outline
-                )
+            Column() {
+                var expanded by remember { mutableStateOf(false) }
+                IconButton(
+                    onClick = {
+                        expanded = true
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = "Favorite",
+                        tint = MaterialTheme.colorScheme.outline
+                    )
+                }
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+
+                    ){
+                    DropdownMenuItem(
+                        text = { Text("Shere") },
+                        onClick = { /* Handle edit! */ },
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.Share,
+                                contentDescription = null
+                            )
+                        })
+                    DropdownMenuItem(
+                        text = { Text("Settings") },
+                        onClick = { /* Handle settings! */ },
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.Settings,
+                                contentDescription = null
+                            )
+                        })
+                }
             }
+
         }
             Image(
                 painter = rememberAsyncImagePainter(model = "https://i.pinimg.com/originals/8b/c7/e5/8bc7e577a55598b8687de2ccc2fd8a0e.png"),
@@ -108,7 +135,6 @@ fun TrackCard(
                     .fillMaxWidth()
                     .clip(MaterialTheme.shapes.large)
                     .aspectRatio(3f / 2f)
-                    .padding(8.dp, 0.dp)
             )
             Column(
                 modifier = Modifier
@@ -134,17 +160,23 @@ fun TrackCard(
                             text = "Distance",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
                         )
-//                    Divider(modifier = Modifier.padding(4.dp, 0.dp).fillMaxWidth(0.5f)
-//                    )
+                        Divider(
+                            Modifier.padding(4.dp, 0.dp)
+                        )
                         Text(
                             text = "24.9 km",
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurface,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
+//                    Divider(
+//                        Modifier.padding(0.dp, 4.dp)
+//                    )
                     Column(
                         modifier = Modifier
                             .weight(1f),
@@ -154,19 +186,25 @@ fun TrackCard(
                             text = "Speed",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
                         )
-//                    Divider(color = MaterialTheme.colorScheme.outlineVariant,
-//                        thickness = 10.dp,
-//                        modifier = Modifier.padding(4.dp, 0.dp).fillMaxWidth(40f)
-//                    )
+                        Divider(
+                            Modifier.padding(4.dp, 0.dp)
+                        )
                         Text(
                             text = "11.3 km/h",
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurface,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
+//                    Divider(
+//                        Modifier.padding(0.dp, 4.dp)
+//                            .fillMaxHeight()
+//                            .width(1.dp)
+//                    )
                     Column(
                         modifier = Modifier
                             .weight(1f),
@@ -176,16 +214,18 @@ fun TrackCard(
                             text = "Time",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
                         )
                         Divider(
-                            Modifier.fillMaxWidth()
+                            Modifier.padding(4.dp, 0.dp)
                         )
                         Text(
                             text = "13 h 32 min",
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurface,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
                 }
@@ -202,23 +242,23 @@ fun TrackCard(
                 ) {
                     SmallFloatingActionButton(
                         onClick = { /*TODO*/ },
-                        containerColor = MaterialTheme.colorScheme.primary
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
                     ) {
                         Icon(
                             imageVector = Icons.Default.ThumbUp,
                             contentDescription = "Like",
-                            tint = MaterialTheme.colorScheme.onPrimary
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     SmallFloatingActionButton(
                         onClick = { /*TODO*/ },
-                        containerColor = MaterialTheme.colorScheme.primary
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
                     ) {
                         Icon(
                             imageVector = Icons.Default.MailOutline,
                             contentDescription = "Comment",
-                            tint = MaterialTheme.colorScheme.onPrimary
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     }
                 }
