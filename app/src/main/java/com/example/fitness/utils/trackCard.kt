@@ -23,6 +23,7 @@ import coil.compose.rememberAsyncImagePainter
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MailOutline
+import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
@@ -64,7 +65,7 @@ fun TrackCard(
                 .padding(20.dp)
         ) {
             Image(
-                painter = rememberAsyncImagePainter(model = "https://afisha.yuga.ru/media/c4/4a/happy-1836445_1920__wbcwyny.jpg"),
+                painter = rememberAsyncImagePainter(model = "https://c1.wallpaperflare.com/preview/952/665/252/young-sunset-male-guy.jpg"),
                 contentDescription = null,
                 modifier = Modifier
                     .size(44.dp)
@@ -256,7 +257,7 @@ fun TrackCard(
                         containerColor = MaterialTheme.colorScheme.primaryContainer
                     ) {
                         Icon(
-                            imageVector = Icons.Default.MailOutline,
+                            imageVector = Icons.Default.Message,
                             contentDescription = "Comment",
                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
