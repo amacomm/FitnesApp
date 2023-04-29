@@ -1,9 +1,14 @@
 package com.example.fitness.Page
 
+import android.content.Intent
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,6 +36,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,6 +48,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.fitness.TrackCard
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.fitness.DataSaveActivity
+import com.example.fitness.MainActivity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -117,9 +125,10 @@ fun HomePage(){
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun NavHostContainer(
+    activity: ComponentActivity,
     navController: NavHostController,
     padding: PaddingValues
 ) {
@@ -137,6 +146,7 @@ fun NavHostContainer(
 
             // route : Home
             composable("home") {
+                Box(modifier = Modifier.fillMaxSize()){
                 LazyColumn(contentPadding = padding) {
                     items(20) {
                         TrackCard(
@@ -147,6 +157,18 @@ fun NavHostContainer(
                             modifier = Modifier.padding(8.dp)
                         )
                     }
+                }
+                Column(modifier = Modifier.fillMaxSize()
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Bottom) {
+                    FloatingActionButton(onClick = {
+                        val intent = Intent(activity, DataSaveActivity::class.java)
+                        activity.startActivity(intent)
+                    }) {
+                        Icon(Icons.Filled.Add, contentDescription = "Add")
+                    }
+                }
                 }
             }
 

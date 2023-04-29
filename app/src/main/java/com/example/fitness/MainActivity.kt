@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
                         bottomBar = {
                             BottomNavigationBar(navController = navController)
                         }, content = { padding ->
-                            NavHostContainer(navController = navController, padding = padding)
+                            NavHostContainer(activity = this, navController = navController, padding = padding)
                         }
                     )
                     //HomePage()
