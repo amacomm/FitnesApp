@@ -21,12 +21,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.example.fitness.client.models.UserDto
 
 @Composable
-@Preview
-fun PeopleCard(image:String = "https://c1.wallpaperflare.com/preview/952/665/252/young-sunset-male-guy.jpg",
-                Name: String = "Some Guy",
-                From: String = "Some Place",
+//@Preview
+fun PeopleCard(userDto: UserDto,
+//    image:String = "https://c1.wallpaperflare.com/preview/952/665/252/young-sunset-male-guy.jpg",
+//                Name: String = "Some Guy",
+//                From: String = "Some Place",
                Signed: Boolean = false){
     Card(modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -35,25 +37,29 @@ fun PeopleCard(image:String = "https://c1.wallpaperflare.com/preview/952/665/252
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)) {
-            Image(
-                painter = rememberAsyncImagePainter(model = image),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(CircleShape),
-                alignment = Alignment.Center
-            )
+//            Image(
+//                painter = rememberAsyncImagePainter(model = image),
+//                contentDescription = null,
+//                modifier = Modifier
+//                    .size(44.dp)
+//                    .clip(CircleShape),
+//                alignment = Alignment.Center
+//            )
             Column(modifier = Modifier
                 .weight(1f)
                 .padding(8.dp, 0.dp),
             verticalArrangement = Arrangement.Center) {
-                Text(text = Name,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                Text(
+                    text = "${userDto.firstName} ${userDto.lastName}",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
-                Text(text = From,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+//                Text(text = when(userDto.gender) {
+//                    0->"Man"
+//                    else -> "Woman"
+//                },
+//                    style = MaterialTheme.typography.bodyMedium,
+//                    color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             when{
                 !Signed ->

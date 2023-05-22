@@ -1,5 +1,12 @@
 package com.example.fitness.Page
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.icu.text.SimpleDateFormat
+import android.location.Location
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,17 +38,42 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.example.fitness.R
+import com.example.fitness.client.apis.UsersApi
+import com.example.fitness.client.models.UserDto
+import com.example.fitness.utils.ApiService
+import java.io.File
+import java.time.LocalDateTime
+import java.util.Date
 
 @Composable
-@Preview
-fun ProfilePage() {
+fun ProfilePage(context: ComponentActivity) {
+    var name by remember { mutableStateOf("Name") }
+    var gender by remember { mutableStateOf(0) }
+    var dateOfBirth by remember { mutableStateOf(LocalDateTime.now().toString()) }
+    val broadcastReceiver = object: BroadcastReceiver(){
+        override fun onReceive(p0: Context, p1: Intent) {
+            name = p1.extras!!.get("username") as String
+            gender = p1.extras!!.get("usergender") as Int
+            dateOfBirth = p1.extras!!.get("userdate") as String
+        }
+    }
+    context.registerReceiver(broadcastReceiver, IntentFilter("userdata"))
+    val intent = Intent(context, ApiService::class.java)
+    intent.putExtra("page", "profile")
+    context.startService(intent)
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(8.dp)) {
@@ -49,7 +81,6 @@ fun ProfilePage() {
                 colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
         )){
-
             Column(horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
@@ -63,15 +94,18 @@ fun ProfilePage() {
                     alignment = Alignment.Center
                 )
                 Spacer(modifier = Modifier.padding(4.dp))
-                Text(text = "Some Guy",
+                Text(text = name,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface)
                 Spacer(modifier = Modifier.padding(4.dp))
-                Text(text = "City 17",
+                Text(text = when (gender) {
+                    0 -> stringResource(id = R.string.Male)
+                    else -> stringResource(id = R.string.Female)
+                },
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(modifier = Modifier.padding(4.dp))
-                Text(text = "Ride on something and do something",
+                Text(text = dateOfBirth,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface)
                 Spacer(modifier = Modifier.padding(4.dp))
@@ -80,7 +114,7 @@ fun ProfilePage() {
                     .padding(8.dp)) {
                     TextButton(onClick = {}){
                         Column() {
-                            Text(text = "Subscriptions",
+                            Text(text = stringResource(id = R.string.Subscriptions),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Text(text = "108",
@@ -91,7 +125,7 @@ fun ProfilePage() {
                     Spacer(modifier = Modifier.padding(4.dp))
                     TextButton(onClick = {}){
                     Column() {
-                        Text(text = "Subscribers",
+                        Text(text = stringResource(id = R.string.Subscribers),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant)
                         Text(text = "29",
@@ -105,7 +139,7 @@ fun ProfilePage() {
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                             modifier = Modifier.padding(4.dp)
                     ) {
-                        Text(text = "Edit profile")
+                        Text(text = stringResource(id = R.string.Edit))
                     }
                 }
             }
@@ -120,7 +154,7 @@ fun ProfilePage() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)) {
-                Text(text = "For this week",
+                Text(text = stringResource(id = R.string.Week),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(modifier = Modifier.padding(4.dp))
@@ -133,7 +167,7 @@ fun ProfilePage() {
                         modifier = Modifier
                             .weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "Distance",
+                        Text(text = stringResource(id = R.string.Distance),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center)
@@ -150,7 +184,7 @@ fun ProfilePage() {
                         modifier = Modifier
                             .weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "Time",
+                        Text(text = stringResource(id = R.string.Time),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center)
@@ -167,7 +201,7 @@ fun ProfilePage() {
                         modifier = Modifier
                             .weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "Height gain",
+                        Text(text = stringResource(id = R.string.Height),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center)
@@ -238,18 +272,18 @@ fun ProfilePage() {
                             Divider()
                             Row(modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.Center) {
-                                Text(text = "April",
+                                Text(text = stringResource(id = R.string.April),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier.weight(1f)
                                 )
-                                Text(text = "May",
+                                Text(text = stringResource(id = R.string.May),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier.weight(1f))
-                                Text(text = "June",
+                                Text(text = stringResource(id = R.string.June),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     textAlign = TextAlign.Center,
@@ -267,7 +301,7 @@ fun ProfilePage() {
             )){
             Column(horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()) {
-                Text(text = "Media",
+                Text(text = stringResource(id = R.string.Media),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center)

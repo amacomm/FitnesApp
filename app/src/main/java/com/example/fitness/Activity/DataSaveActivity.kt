@@ -1,4 +1,4 @@
-package com.example.fitness
+package com.example.fitness.Activity
 
 import android.content.Intent
 import android.os.Bundle

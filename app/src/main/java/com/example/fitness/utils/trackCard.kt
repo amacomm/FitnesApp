@@ -41,10 +41,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
+import com.example.fitness.Page.Info
+import com.example.fitness.client.models.TrackRecordDto
 
 @Composable
-@Preview
 fun TrackCard(
+    track: Info,
     modifier: Modifier = Modifier,
     User: String = "Пацан улиц",
     createdAt: String= "16:81",
@@ -79,12 +82,12 @@ fun TrackCard(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = User,
+                    text = track.name,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = createdAt,
+                    text = track.date,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -108,7 +111,7 @@ fun TrackCard(
 
                     ){
                     DropdownMenuItem(
-                        text = { Text("Shere") },
+                        text = { Text(stringResource(id = R.string.Shere)) },
                         onClick = { /* Handle edit! */ },
                         leadingIcon = {
                             Icon(
@@ -117,7 +120,7 @@ fun TrackCard(
                             )
                         })
                     DropdownMenuItem(
-                        text = { Text("Settings") },
+                        text = { Text(stringResource(id = R.string.Settings)) },
                         onClick = { /* Handle settings! */ },
                         leadingIcon = {
                             Icon(
@@ -158,7 +161,7 @@ fun TrackCard(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = "Distance",
+                            text = stringResource(id = R.string.Distance),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center,
@@ -168,7 +171,7 @@ fun TrackCard(
                             Modifier.padding(4.dp, 0.dp)
                         )
                         Text(
-                            text = "24.9 km",
+                            text = track.distance.toString(),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurface,
                             textAlign = TextAlign.Center,
@@ -184,7 +187,7 @@ fun TrackCard(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = "Speed",
+                            text = stringResource(id = R.string.Speed),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center,
@@ -194,7 +197,7 @@ fun TrackCard(
                             Modifier.padding(4.dp, 0.dp)
                         )
                         Text(
-                            text = "11.3 km/h",
+                            text = track.speed.toString(),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurface,
                             textAlign = TextAlign.Center,
@@ -212,7 +215,7 @@ fun TrackCard(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = "Time",
+                            text = stringResource(id = R.string.Time),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center,
@@ -222,7 +225,7 @@ fun TrackCard(
                             Modifier.padding(4.dp, 0.dp)
                         )
                         Text(
-                            text = "13 h 32 min",
+                            text = track.time,
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurface,
                             textAlign = TextAlign.Center,

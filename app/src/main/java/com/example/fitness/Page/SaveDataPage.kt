@@ -41,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
@@ -58,7 +59,7 @@ fun SaveDataPage(activity: ComponentActivity){
             .fillMaxSize()
     ) {
         TopAppBar(
-            title = { Text(text = "Save training") },
+            title = { Text(text = stringResource(id = R.string.SaveDataPageTitle)) },
             navigationIcon = {
                 IconButton(onClick = {
                     val intent = Intent(activity, MainActivity::class.java)
@@ -71,7 +72,7 @@ fun SaveDataPage(activity: ComponentActivity){
             },
             actions = {
                 TextButton(onClick = { /*TODO*/ }) {
-                    Text(text="Save",
+                    Text(text=stringResource(id = R.string.Save),
                     color = MaterialTheme.colorScheme.primary)
                 }
             }
@@ -98,7 +99,7 @@ fun SaveDataPage(activity: ComponentActivity){
                         .padding(8.dp, 0.dp),
                     value = TraningName.value,
                     onValueChange = { if (it.length <= 20) TraningName.value = it },
-                    label = { Text("Training name") },
+                    label = { Text(stringResource(id = R.string.Trainingname)) },
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = MaterialTheme.colorScheme.primary,
                         unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                         focusedTextColor = MaterialTheme.colorScheme.onSurface,
@@ -113,7 +114,7 @@ fun SaveDataPage(activity: ComponentActivity){
                         .padding(8.dp, 0.dp),
                     value = TrainingDescription.value,
                     onValueChange = { TrainingDescription.value = it },
-                    label = { Text("Training description") },
+                    label = { Text(stringResource(id = R.string.Trainingdescription)) },
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = MaterialTheme.colorScheme.primary,
                         unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                         focusedTextColor = MaterialTheme.colorScheme.onSurface,
@@ -172,7 +173,7 @@ fun SaveDataPage(activity: ComponentActivity){
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp, 0.dp),
-                        label = { Text(text = "Type of training") },
+                        label = { Text(text = stringResource(id = R.string.Typeoftraining)) },
                         value = selectedItem.first,
                         onValueChange = {},
                         colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -209,7 +210,7 @@ fun SaveDataPage(activity: ComponentActivity){
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
                         modifier = Modifier.padding(4.dp)
                     ) {
-                        Text(text = "Delete training",
+                        Text(text = stringResource(id = R.string.Deletetraining),
                             color = MaterialTheme.colorScheme.error)
                     }
                 }
