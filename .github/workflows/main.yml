@@ -7,4 +7,5 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v2
       - name: Build the app
+        with: { java-version: 1.8 }
         run: ./gradlew build
