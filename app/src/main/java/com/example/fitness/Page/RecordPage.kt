@@ -40,7 +40,6 @@ import com.example.fitness.utils.LocationService
 import java.util.Date
 
 @Composable
-//@Preview
 fun RecordPage(
     activity: ComponentActivity
 ){
@@ -155,10 +154,11 @@ fun RecordPage(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
             LargeFloatingActionButton(onClick = {
-                if(check1){
+                if(lastLocation != null){
                     val intent= Intent(activity, LocationService::class.java)
                     activity.stopService(intent)
                     check1=false
+                    activity.finish()
                 }
                 else{
                     val intent = Intent(activity, LocationService::class.java)

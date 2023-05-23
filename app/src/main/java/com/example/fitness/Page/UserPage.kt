@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.fitness.R
 import com.example.fitness.TrackCard
 import com.example.fitness.client.models.UserDto
@@ -42,9 +43,9 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun UserPage(activity: ComponentActivity){
+fun UserPage(activity: ComponentActivity, navController: NavHostController){
     val pagerState = rememberPagerState(0)
-    ProfilePage(activity)
+    ProfilePage(activity, navController)
 //    Column() {
 //
 //        Tabs(pagerState = pagerState)
@@ -123,7 +124,7 @@ fun TabsContent(pagerState: PagerState, activity: ComponentActivity) {
     {
             page ->
         when (page) {
-            0 -> ProfilePage(activity)
+            0 -> {}//ProfilePage(activity)
             1 -> {
                 var list = mutableListOf(Info())
                 var tracks by remember { mutableStateOf(list) }

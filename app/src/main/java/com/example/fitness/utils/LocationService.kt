@@ -16,6 +16,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.IBinder
 import android.util.Xml
+import androidx.compose.material3.ExperimentalMaterial3Api
+import com.example.fitness.Activity.DataSaveActivity
 import org.xmlpull.v1.XmlSerializer
 import java.io.BufferedWriter
 import java.io.FileWriter
@@ -24,6 +26,7 @@ import java.util.ArrayList
 import java.util.Date
 import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 class LocationService : Service() {
     private lateinit var mLocationManager: LocationManager
     private lateinit var mLocationListeners: LocationListener
@@ -138,12 +141,17 @@ class LocationService : Service() {
             }
         }
         var Doc = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-        val Format2 = SimpleDateFormat("'CompAs'yyyyMMddHHmmss'.gpx'")
+        val Format2 = SimpleDateFormat("'Fitness'yyyyMMddHHmmss'.gpx'")
         val bw = BufferedWriter(
             FileWriter(Doc.toString()+"/"+Format2.format(Date(arrLoc[0].time)))
         )
         bw.write(xmlString)
         bw.close()
+
+        val intent = Intent(this, DataSaveActivity::class.java)
+        intent.putExtra("path", Doc.toString()+"/"+Format2.format(Date(arrLoc[0].time)))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     fun XmlSerializer.document(docName: String = "UTF-8",

@@ -49,6 +49,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.fitness.R
 import com.example.fitness.client.apis.UsersApi
@@ -59,7 +60,7 @@ import java.time.LocalDateTime
 import java.util.Date
 
 @Composable
-fun ProfilePage(context: ComponentActivity) {
+fun ProfilePage(context: ComponentActivity, navController: NavHostController) {
     var name by remember { mutableStateOf("Name") }
     var gender by remember { mutableStateOf(0) }
     var dateOfBirth by remember { mutableStateOf(LocalDateTime.now().toString()) }
@@ -112,7 +113,9 @@ fun ProfilePage(context: ComponentActivity) {
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)) {
-                    TextButton(onClick = {}){
+                    TextButton(onClick = {
+                        navController.navigate("subscribers")
+                    }){
                         Column() {
                             Text(text = stringResource(id = R.string.Subscriptions),
                                 style = MaterialTheme.typography.bodyMedium,
@@ -123,7 +126,9 @@ fun ProfilePage(context: ComponentActivity) {
                         }
                     }
                     Spacer(modifier = Modifier.padding(4.dp))
-                    TextButton(onClick = {}){
+                    TextButton(onClick = {
+                        navController.navigate("subscribers")
+                    }){
                     Column() {
                         Text(text = stringResource(id = R.string.Subscribers),
                             style = MaterialTheme.typography.bodyMedium,

@@ -35,4 +35,6 @@
     <string name="Deletetraining">Delete training</string>
     <string name="EditM">Edit</string>
     <string name="Delete">Delete</string>
+    <string name="Subscribe">Subscribe</string>
+    <string name="Unsubscribe">Unsubscribe</string>
 </resources>

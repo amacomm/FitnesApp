@@ -17,6 +17,7 @@ import com.example.fitness.ui.theme.FitnessTheme
 class DataSaveActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val path = intent.extras?.get("path") as String
         setContent {
             FitnessTheme {
                 Surface(

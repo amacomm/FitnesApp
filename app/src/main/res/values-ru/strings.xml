@@ -35,4 +35,6 @@
     <string name="Deletetraining">Удалить тренировку</string>
     <string name="EditM">Настроить</string>
     <string name="Delete">Удалить</string>
+    <string name="Subscribe">Подписаться</string>
+    <string name="Unsubscribe">Отписаться</string>
 </resources>

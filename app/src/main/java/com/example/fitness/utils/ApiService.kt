@@ -22,6 +22,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
+import java.net.SocketTimeoutException
 import java.util.Date
 import kotlin.concurrent.thread
 
@@ -47,17 +48,27 @@ class ApiService: Service() {
             "profile"-> {
                 SendUserData()
             }
+            "people"->{
+                getSubscription()
+            }
             else->{
                 val path = intent.extras!!.get("path") as String
+                try{
                 val auth = userApi.apiUsersLoginPost(AuthRequest("user", "user"))
                 token = auth.accessToken!!
                 userApi.addAccessToken(auth)
                 followsApi.addAccessToken(auth)
                 trackApi.addAccessToken(auth)
                 user = userApi.apiUsersMeGet()
-                SendUserData()
                 SendHistory()
                 SendUserTracks()
+                }
+                catch (e: ServerException){
+
+                }
+                catch (e: SocketTimeoutException){
+
+                }
             }
         }
         }
@@ -65,31 +76,33 @@ class ApiService: Service() {
     }
 
     fun SendUserData(){
-        var intent = Intent("userdata")
-        intent.putExtra("username", "${user.firstName} ${user.lastName}")
-        intent.putExtra("usergender", user.gender)
-        intent.putExtra("userdate", user.dateOfBirth.toString())
-        sendBroadcast(intent)
+        if(::user.isInitialized) {
+            var intent = Intent("userdata")
+            intent.putExtra("username", "${user.firstName} ${user.lastName}")
+            intent.putExtra("usergender", user.gender)
+            intent.putExtra("userdate", user.dateOfBirth.toString())
+            sendBroadcast(intent)
+        }
     }
 
-    fun loadToken(tokenPath: String): Boolean {
-        val file = File(tokenPath)
-        if (file.exists()) {
-            val br = BufferedReader(FileReader(file))
-            token = br.readLine()
-                thread{
-                    try{
-                        userApi.addAccessToken(token)
-                        followsApi.addAccessToken(token)
-                        trackApi.addAccessToken(token)
-                        user = userApi.apiUsersMeGet()
-                    } catch (e: ServerException){
-                    }
-                }
-            return true
-        }
-        return false
-    }
+//    fun loadToken(tokenPath: String): Boolean {
+//        val file = File(tokenPath)
+//        if (file.exists()) {
+//            val br = BufferedReader(FileReader(file))
+//            token = br.readLine()
+//                thread{
+//                    try{
+//                        userApi.addAccessToken(token)
+//                        followsApi.addAccessToken(token)
+//                        trackApi.addAccessToken(token)
+//                        user = userApi.apiUsersMeGet()
+//                    } catch (e: ServerException){
+//                    }
+//                }
+//            return true
+//        }
+//        return false
+//    }
 
     fun saveToken(Path:String,  Login: String, Password: String){
         var auth = userApi.apiUsersLoginPost(AuthRequest(Login, Password))
@@ -142,10 +155,18 @@ class ApiService: Service() {
         TODO("Not yet implemented")
     }
 
-//    fun getSubscription(): Array<UserDto> {
-//        var follows = user.id?.let { followsApi.apiFollowsIdGet(it) }
-//        follows.forEach {
-//            it.followingUserId
-//        }
-//    }
+    fun getSubscription() {
+        if(::user.isInitialized)
+        {
+            var follows = user.id?.let { userApi.apiUsersGet() }
+            var intent: Intent
+            follows?.forEach {
+                //val fol = it.followingUserId?.let { it1 -> userApi.apiUsersIdGet(it1) }
+                intent = Intent("people")
+                intent.putExtra("username", "${it.firstName} ${it.lastName}")
+                intent.putExtra("date", it.dateOfBirth.toString())
+                sendBroadcast(intent)
+            }
+        }
+    }
 }

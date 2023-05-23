@@ -10,7 +10,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.integerArrayResource
 import androidx.navigation.compose.rememberNavController
+import com.example.fitness.Activity.DataSaveActivity
 import com.example.fitness.Activity.LoginActivity
 import com.example.fitness.Page.BottomNavigationBar
 import com.example.fitness.Page.NavHostContainer
@@ -33,6 +35,20 @@ class MainActivity : ComponentActivity() {
         intent.putExtra("page", "main")
         startService(intent)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            123->{
+                if(resultCode == RESULT_OK){
+                    val intent = Intent(this, DataSaveActivity::class.java)
+                    intent.putExtra("path", data!!.data!!.path)
+                    startActivity(intent)
+                }
+            }
+        }
+    }
+
     private fun startApp(){
         setContent {
             val navController = rememberNavController()
@@ -44,7 +60,8 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         bottomBar = {
                             BottomNavigationBar(navController = navController, this)
-                        }, content = { padding ->
+                        },
+                        content = { padding ->
                             NavHostContainer(activity = this, navController = navController, padding = padding)
                         }
                     )
